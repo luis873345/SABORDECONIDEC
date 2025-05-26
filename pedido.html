@@ -1,36 +1,150 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Menú Sabor de Conidec</title>
+  <title>Pedidos Compartidos</title>
   <style>
-    body { background: #111; color: white; font-family: sans-serif; padding: 30px; text-align: center; }
-    h1 { color: orange; margin-bottom: 30px; }
-    a {
-      display: block;
+    body {
+      background: #111;
       color: white;
+      font-family: sans-serif;
+      padding: 30px;
+      text-align: center;
+    }
+    .pedido {
       background: #222;
       padding: 15px;
       margin: 10px auto;
-      width: 300px;
-      text-decoration: none;
       border-radius: 10px;
-      border-left: 6px solid orange;
+      width: 90%;
+      max-width: 400px;
+      text-align: left;
     }
-    a:hover { background: #333; }
+    button {
+      padding: 5px 10px;
+      margin-top: 10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: darkred;
+    }
+    input, textarea {
+      padding: 10px;
+      width: 90%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .formulario {
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
-  <h1>🍽️ MENÚ SABOR DE CONIDEC</h1>
-  <a href="pizzas.html">🍕 Pizzas</a>
-  <a href="salvajadas.html">🔥 Salvajadas</a>
-  <a href="Sándwiches.html">🥪 Sándwiches</a>
-  <a href="salchipapa.html">🍟 Salchipapa</a>
-  <a href="Chuzos Desgranados.html">🍢 Chuzos Desgranados</a>
-  <a href="perros.html">🌭 perros</a>
-  <a href="hamburguesa.html">🍔 hamburguesa</a>
-  <a href="asados.html">🥩 asados/a>
+
+  <h1>📋 Pedidos Compartidos</h1>
+
+  <div class="formulario">
+    <input type="text" id="nombre" placeholder="Nombre"><br>
+    <textarea id="pedido" placeholder="¿Qué vas a pedir?"></textarea><br>
+    <input type="text" id="direccion" placeholder="Dirección"><br>
+    <button onclick="enviarPedido()">Enviar Pedido</button>
+  </div>
+
+  <div id="lista-pedidos"></div>
+
+  <script>
+    // ✅ Tu configuración de Firebase aquí:
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_DOMINIO.firebaseapp.com",
+      databaseURL: "https://TU_DOMINIO.firebaseio.com",
+      projectId: "TU_PROYECTO",
+      storageBucket: "TU_PROYECTO.appspot.com",
+      messagingSenderId: "ID",
+      appId: "APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Enviar un nuevo pedido
+    function enviarPedido() {
+      const nombre = document.getElementById("nombre").value.trim();
+      const pedido = document.getElementById("pedido").value.trim();
+      const direccion = document.getElementById("direccion").value.trim();
+
+      if (!nombre || !pedido || !direccion) {
+        alert("Por favor completa todos los campos.");
+        return;
+      }
+
+      const nuevoPedido = {
+        nombre,
+        pedido,
+        direccion,
+        fecha: new Date().toLocaleString()
+      };
+
+      const id = Date.now();
+      db.ref("pedidos/" + id).set({ ...nuevoPedido, id });
+
+      // Limpiar campos
+      document.getElementById("nombre").value = "";
+      document.getElementById("pedido").value = "";
+      document.getElementById("direccion").value = "";
+    }
+
+    // Cargar todos los pedidos en tiempo real
+    function cargarPedidos() {
+      const contenedor = document.getElementById("lista-pedidos");
+      db.ref("pedidos").on("value", snapshot => {
+        const pedidos = snapshot.val();
+        contenedor.innerHTML = "";
+
+        if (!pedidos) {
+          contenedor.innerHTML = "<p>No hay pedidos registrados.</p>";
+          return;
+        }
+
+        // Convertir objeto en array y ordenar por fecha
+        const lista = Object.values(pedidos).sort((a, b) => b.id - a.id);
+
+        lista.forEach(pedido => {
+          const div = document.createElement("div");
+          div.className = "pedido";
+          div.innerHTML = `
+            <strong>${pedido.nombre}</strong> pidió:<br>${pedido.pedido}<br>
+            Dirección: ${pedido.direccion}<br>
+            <small>${pedido.fecha}</small><br>
+            <button onclick="eliminarPedido(${pedido.id})">Eliminar</button>
+          `;
+          contenedor.appendChild(div);
+        });
+      });
+    }
+
+    // Eliminar pedido por ID
+    function eliminarPedido(id) {
+      db.ref("pedidos/" + id).remove();
+    }
+
+    // Iniciar carga automática
+    cargarPedidos();
+  </script>
 </body>
 </html>
 
