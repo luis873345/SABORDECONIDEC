@@ -75,26 +75,29 @@
     <a href="asados.html">🥩 Asados</a>
   </div>
 
-  <script>
-    // Cargar datos guardados al iniciar
-    window.onload = function() {
-      document.getElementById("nombre").value = localStorage.getItem("temp_nombre") || "";
-      document.getElementById("pedido").value = localStorage.getItem("temp_pedido") || "";
-      document.getElementById("direccion").value = localStorage.getItem("temp_direccion") || "";
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Importa módulos de Firebase desde CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    // 🔁 Reemplaza estos datos con los tuyos desde la consola de Firebase
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_DOMINIO.firebaseapp.com",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_BUCKET.appspot.com",
+      messagingSenderId: "TU_SENDER_ID",
+      appId: "TU_APP_ID",
+      databaseURL: "https://TU_PROJECT_ID-default-rtdb.firebaseio.com"
     };
 
-    // Guardar datos al escribir
-    document.getElementById("nombre").addEventListener("input", () => {
-      localStorage.setItem("temp_nombre", document.getElementById("nombre").value);
-    });
-    document.getElementById("pedido").addEventListener("input", () => {
-      localStorage.setItem("temp_pedido", document.getElementById("pedido").value);
-    });
-    document.getElementById("direccion").addEventListener("input", () => {
-      localStorage.setItem("temp_direccion", document.getElementById("direccion").value);
-    });
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-    function enviarPedido() {
+    // Función para enviar pedido
+    window.enviarPedido = async function () {
       const nombre = document.getElementById("nombre").value.trim();
       const pedido = document.getElementById("pedido").value.trim();
       const direccion = document.getElementById("direccion").value.trim();
@@ -104,38 +107,28 @@
         return;
       }
 
-      const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-      const posicion = pedidos.length + 1; // posición del nuevo pedido
-
       const nuevoPedido = {
-        id: Date.now(),
         nombre,
         pedido,
         direccion,
         fecha: new Date().toLocaleString()
       };
 
-      pedidos.push(nuevoPedido);
-      localStorage.setItem("pedidos", JSON.stringify(pedidos));
+      try {
+        await push(ref(db, "pedidos"), nuevoPedido);
 
-      // Limpiar los campos
-      document.getElementById("nombre").value = "";
-      document.getElementById("pedido").value = "";
-      document.getElementById("direccion").value = "";
+        // Limpiar campos
+        document.getElementById("nombre").value = "";
+        document.getElementById("pedido").value = "";
+        document.getElementById("direccion").value = "";
 
-      // Eliminar datos temporales
-      localStorage.removeItem("temp_nombre");
-      localStorage.removeItem("temp_pedido");
-      localStorage.removeItem("temp_direccion");
-
-      // Mensaje personalizado
-      if (posicion === 1) {
-        alert(`🎉 Eres el primer pedido del día.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
-      } else {
-        alert(`📦 Hay ${posicion - 1} pedido(s) delante de ti. Tu pedido es el número ${posicion}.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
+        alert(`✅ Pedido enviado correctamente.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
+      } catch (error) {
+        alert("❌ Error al enviar el pedido: " + error.message);
       }
-    }
+    };
   </script>
 
 </body>
 </html>
+
