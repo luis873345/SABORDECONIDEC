@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Hacer Pedido</title>
   <style>
     body {
@@ -31,73 +31,71 @@
     button:hover {
       background: darkorange;
     }
-    a {
-      display: block;
-      color: white;
+    .pedido {
       background: #222;
-      padding: 15px;
-      margin: 10px auto;
-      width: 300px;
-      text-decoration: none;
+      margin: 15px auto;
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: left;
+      border-left: 5px solid orange;
       border-radius: 10px;
-      border-left: 6px solid orange;
-    }
-    a:hover { background: #333; }
-    .menu {
-      margin-top: 50px;
     }
     h2 {
       color: orange;
       margin-top: 50px;
     }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
   <h1>Hacer Pedido</h1>
 
-  <input id="nombre" placeholder="Tu nombre">
+  <input id="nombre" placeholder="Tu nombre" />
   <textarea id="pedido" placeholder="¿Qué vas a pedir?"></textarea>
-  <input id="direccion" placeholder="Tu dirección">
+  <input id="direccion" placeholder="Tu dirección" />
   <button onclick="enviarPedido()">Enviar Pedido</button>
 
-  <a href="pedidos.html">📋 Ver Pedidos</a>
+  <h2>📋 Pedidos Recibidos</h2>
+  <div id="lista-pedidos"></div>
 
-  <div class="menu">
-    <h2>🍽️ MENÚ SABOR DE CONIDEC</h2>
-    <a href="pizzas.html">🍕 Pizzas</a>
-    <a href="salvajadas.html">🔥 Salvajadas</a>
-    <a href="Sándwiches.html">🥪 Sándwiches</a>
-    <a href="salchipapa.html">🍟 Salchipapa</a>
-    <a href="Chuzos Desgranados.html">🍢 Chuzos Desgranados</a>
-    <a href="perros.html">🌭 Perros</a>
-    <a href="hamburguesa.html">🍔 Hamburguesa</a>
-    <a href="asados.html">🥩 Asados</a>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    // Importa módulos de Firebase desde CDN
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-    // 🔁 Reemplaza estos datos con los tuyos desde la consola de Firebase
+  <script>
+    // 🔧 CONFIGURA TU FIREBASE AQUÍ
     const firebaseConfig = {
       apiKey: "TU_API_KEY",
-      authDomain: "TU_DOMINIO.firebaseapp.com",
+      authDomain: "TU_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://TU_PROJECT_ID-default-rtdb.firebaseio.com",
       projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_BUCKET.appspot.com",
+      storageBucket: "TU_PROJECT_ID.appspot.com",
       messagingSenderId: "TU_SENDER_ID",
-      appId: "TU_APP_ID",
-      databaseURL: "https://TU_PROJECT_ID-default-rtdb.firebaseio.com"
+      appId: "TU_APP_ID"
     };
 
-    // Inicializa Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    // Función para enviar pedido
-    window.enviarPedido = async function () {
+    // Cargar datos temporales al iniciar
+    window.onload = function () {
+      document.getElementById("nombre").value = localStorage.getItem("temp_nombre") || "";
+      document.getElementById("pedido").value = localStorage.getItem("temp_pedido") || "";
+      document.getElementById("direccion").value = localStorage.getItem("temp_direccion") || "";
+      mostrarPedidos();
+    };
+
+    // Guardar campos temporalmente
+    ["nombre", "pedido", "direccion"].forEach(id => {
+      document.getElementById(id).addEventListener("input", () => {
+        localStorage.setItem(`temp_${id}`, document.getElementById(id).value);
+      });
+    });
+
+    // Enviar pedido
+    function enviarPedido() {
       const nombre = document.getElementById("nombre").value.trim();
       const pedido = document.getElementById("pedido").value.trim();
       const direccion = document.getElementById("direccion").value.trim();
@@ -114,21 +112,44 @@
         fecha: new Date().toLocaleString()
       };
 
-      try {
-        await push(ref(db, "pedidos"), nuevoPedido);
+      const ref = db.ref("pedidos");
+      ref.push(nuevoPedido);
 
-        // Limpiar campos
-        document.getElementById("nombre").value = "";
-        document.getElementById("pedido").value = "";
-        document.getElementById("direccion").value = "";
+      // Limpiar campos
+      document.getElementById("nombre").value = "";
+      document.getElementById("pedido").value = "";
+      document.getElementById("direccion").value = "";
+      localStorage.clear();
 
-        alert(`✅ Pedido enviado correctamente.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
-      } catch (error) {
-        alert("❌ Error al enviar el pedido: " + error.message);
-      }
-    };
+      alert("✅ Pedido enviado con éxito.");
+    }
+
+    // Mostrar pedidos en la misma página
+    function mostrarPedidos() {
+      const ref = db.ref("pedidos");
+      ref.on("value", snapshot => {
+        const contenedor = document.getElementById("lista-pedidos");
+        contenedor.innerHTML = "";
+        const pedidos = snapshot.val();
+        if (pedidos) {
+          Object.values(pedidos).forEach(p => {
+            const div = document.createElement("div");
+            div.className = "pedido";
+            div.innerHTML = `<strong>${p.nombre}</strong><br>
+                             ${p.pedido}<br>
+                             📍 ${p.direccion}<br>
+                             🕒 ${p.fecha}`;
+            contenedor.appendChild(div);
+          });
+        }
+      });
+    }
   </script>
-
 </body>
 </html>
 
+
+
+
+
+  
