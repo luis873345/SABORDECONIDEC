@@ -1,5 +1,4 @@
-
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -51,6 +50,18 @@
       color: orange;
       margin-top: 50px;
     }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #333;
+      margin: 5px auto;
+      padding: 10px;
+      border-radius: 5px;
+      width: 80%;
+      max-width: 600px;
+    }
   </style>
 </head>
 <body>
@@ -62,7 +73,8 @@
   <input id="direccion" placeholder="Tu dirección">
   <button onclick="enviarPedido()">Enviar Pedido</button>
 
-  <a href="pedidos.html">📋 Ver Pedidos</a>
+  <h2>📦 Pedidos Recientes</h2>
+  <ul id="listaPedidos"></ul>
 
   <div class="menu">
     <h2>🍽️ MENÚ SABOR DE CONIDEC</h2>
@@ -76,24 +88,23 @@
     <a href="asados.html">🥩 Asados</a>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
   <script>
-    // Cargar datos guardados al iniciar
-    window.onload = function() {
-      document.getElementById("nombre").value = localStorage.getItem("temp_nombre") || "";
-      document.getElementById("pedido").value = localStorage.getItem("temp_pedido") || "";
-      document.getElementById("direccion").value = localStorage.getItem("temp_direccion") || "";
+    // Reemplaza con tu configuración real de Firebase
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_PROYECTO.firebaseapp.com",
+      databaseURL: "https://TU_PROYECTO.firebaseio.com",
+      projectId: "TU_PROYECTO",
+      storageBucket: "TU_PROYECTO.appspot.com",
+      messagingSenderId: "XXX",
+      appId: "XXX"
     };
 
-    // Guardar datos al escribir
-    document.getElementById("nombre").addEventListener("input", () => {
-      localStorage.setItem("temp_nombre", document.getElementById("nombre").value);
-    });
-    document.getElementById("pedido").addEventListener("input", () => {
-      localStorage.setItem("temp_pedido", document.getElementById("pedido").value);
-    });
-    document.getElementById("direccion").addEventListener("input", () => {
-      localStorage.setItem("temp_direccion", document.getElementById("direccion").value);
-    });
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     function enviarPedido() {
       const nombre = document.getElementById("nombre").value.trim();
@@ -105,38 +116,36 @@
         return;
       }
 
-      const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-      const posicion = pedidos.length + 1; // posición del nuevo pedido
-
       const nuevoPedido = {
-        id: Date.now(),
         nombre,
         pedido,
         direccion,
         fecha: new Date().toLocaleString()
       };
 
-      pedidos.push(nuevoPedido);
-      localStorage.setItem("pedidos", JSON.stringify(pedidos));
-
-      // Limpiar los campos
-      document.getElementById("nombre").value = "";
-      document.getElementById("pedido").value = "";
-      document.getElementById("direccion").value = "";
-
-      // Eliminar datos temporales
-      localStorage.removeItem("temp_nombre");
-      localStorage.removeItem("temp_pedido");
-      localStorage.removeItem("temp_direccion");
-
-      // Mensaje personalizado
-      if (posicion === 1) {
-        alert(`🎉 Eres el primer pedido del día.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
-      } else {
-        alert(`📦 Hay ${posicion - 1} pedido(s) delante de ti. Tu pedido es el número ${posicion}.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
-      }
+      db.ref("pedidos").push(nuevoPedido)
+        .then(() => {
+          alert(`✅ Pedido enviado con éxito. Gracias, ${nombre}.`);
+          document.getElementById("nombre").value = "";
+          document.getElementById("pedido").value = "";
+          document.getElementById("direccion").value = "";
+        })
+        .catch((error) => {
+          console.error("Error al enviar pedido:", error);
+          alert("❌ Ocurrió un error al enviar tu pedido.");
+        });
     }
-  </script>
 
+    db.ref("pedidos").on("value", (snapshot) => {
+      const lista = document.getElementById("listaPedidos");
+      lista.innerHTML = "";
+      snapshot.forEach((child) => {
+        const p = child.val();
+        const li = document.createElement("li");
+        li.textContent = `${p.nombre}: ${p.pedido} (${p.direccion})`;
+        lista.appendChild(li);
+      });
+    });
+  </script>
 </body>
 </html>
