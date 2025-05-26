@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+
+     <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Hacer Pedido</title>
   <style>
     body {
@@ -31,70 +32,69 @@
     button:hover {
       background: darkorange;
     }
-    .pedido {
+    a {
+      display: block;
+      color: white;
       background: #222;
-      margin: 15px auto;
-      padding: 10px;
-      width: 90%;
-      max-width: 400px;
-      text-align: left;
-      border-left: 5px solid orange;
+      padding: 15px;
+      margin: 10px auto;
+      width: 300px;
+      text-decoration: none;
       border-radius: 10px;
+      border-left: 6px solid orange;
+    }
+    a:hover { background: #333; }
+    .menu {
+      margin-top: 50px;
     }
     h2 {
       color: orange;
       margin-top: 50px;
     }
   </style>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
   <h1>Hacer Pedido</h1>
 
-  <input id="nombre" placeholder="Tu nombre" />
+  <input id="nombre" placeholder="Tu nombre">
   <textarea id="pedido" placeholder="¿Qué vas a pedir?"></textarea>
-  <input id="direccion" placeholder="Tu dirección" />
+  <input id="direccion" placeholder="Tu dirección">
   <button onclick="enviarPedido()">Enviar Pedido</button>
 
-  <h2>📋 Pedidos Recibidos</h2>
-  <div id="lista-pedidos"></div>
+  <a href="pedidos.html">📋 Ver Pedidos</a>
+
+  <div class="menu">
+    <h2>🍽️ MENÚ SABOR DE CONIDEC</h2>
+    <a href="pizzas.html">🍕 Pizzas</a>
+    <a href="salvajadas.html">🔥 Salvajadas</a>
+    <a href="Sándwiches.html">🥪 Sándwiches</a>
+    <a href="salchipapa.html">🍟 Salchipapa</a>
+    <a href="Chuzos Desgranados.html">🍢 Chuzos Desgranados</a>
+    <a href="perros.html">🌭 Perros</a>
+    <a href="hamburguesa.html">🍔 Hamburguesa</a>
+    <a href="asados.html">🥩 Asados</a>
+  </div>
 
   <script>
-    // 🔧 CONFIGURA TU FIREBASE AQUÍ
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://TU_PROJECT_ID-default-rtdb.firebaseio.com",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_PROJECT_ID.appspot.com",
-      messagingSenderId: "TU_SENDER_ID",
-      appId: "TU_APP_ID"
-    };
-
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // Cargar datos temporales al iniciar
-    window.onload = function () {
+    // Cargar datos guardados al iniciar
+    window.onload = function() {
       document.getElementById("nombre").value = localStorage.getItem("temp_nombre") || "";
       document.getElementById("pedido").value = localStorage.getItem("temp_pedido") || "";
       document.getElementById("direccion").value = localStorage.getItem("temp_direccion") || "";
-      mostrarPedidos();
     };
 
-    // Guardar campos temporalmente
-    ["nombre", "pedido", "direccion"].forEach(id => {
-      document.getElementById(id).addEventListener("input", () => {
-        localStorage.setItem(`temp_${id}`, document.getElementById(id).value);
-      });
+    // Guardar datos al escribir
+    document.getElementById("nombre").addEventListener("input", () => {
+      localStorage.setItem("temp_nombre", document.getElementById("nombre").value);
+    });
+    document.getElementById("pedido").addEventListener("input", () => {
+      localStorage.setItem("temp_pedido", document.getElementById("pedido").value);
+    });
+    document.getElementById("direccion").addEventListener("input", () => {
+      localStorage.setItem("temp_direccion", document.getElementById("direccion").value);
     });
 
-    // Enviar pedido
     function enviarPedido() {
       const nombre = document.getElementById("nombre").value.trim();
       const pedido = document.getElementById("pedido").value.trim();
@@ -105,51 +105,38 @@
         return;
       }
 
+      const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+      const posicion = pedidos.length + 1; // posición del nuevo pedido
+
       const nuevoPedido = {
+        id: Date.now(),
         nombre,
         pedido,
         direccion,
         fecha: new Date().toLocaleString()
       };
 
-      const ref = db.ref("pedidos");
-      ref.push(nuevoPedido);
+      pedidos.push(nuevoPedido);
+      localStorage.setItem("pedidos", JSON.stringify(pedidos));
 
-      // Limpiar campos
+      // Limpiar los campos
       document.getElementById("nombre").value = "";
       document.getElementById("pedido").value = "";
       document.getElementById("direccion").value = "";
-      localStorage.clear();
 
-      alert("✅ Pedido enviado con éxito.");
-    }
+      // Eliminar datos temporales
+      localStorage.removeItem("temp_nombre");
+      localStorage.removeItem("temp_pedido");
+      localStorage.removeItem("temp_direccion");
 
-    // Mostrar pedidos en la misma página
-    function mostrarPedidos() {
-      const ref = db.ref("pedidos");
-      ref.on("value", snapshot => {
-        const contenedor = document.getElementById("lista-pedidos");
-        contenedor.innerHTML = "";
-        const pedidos = snapshot.val();
-        if (pedidos) {
-          Object.values(pedidos).forEach(p => {
-            const div = document.createElement("div");
-            div.className = "pedido";
-            div.innerHTML = `<strong>${p.nombre}</strong><br>
-                             ${p.pedido}<br>
-                             📍 ${p.direccion}<br>
-                             🕒 ${p.fecha}`;
-            contenedor.appendChild(div);
-          });
-        }
-      });
+      // Mensaje personalizado
+      if (posicion === 1) {
+        alert(`🎉 Eres el primer pedido del día.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
+      } else {
+        alert(`📦 Hay ${posicion - 1} pedido(s) delante de ti. Tu pedido es el número ${posicion}.\nGracias por tu compra, ${nombre}. ¡Disfruta tu pedido!`);
+      }
     }
   </script>
+
 </body>
 </html>
-
-
-
-
-
-  
