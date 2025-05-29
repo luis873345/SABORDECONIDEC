@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Administrador de Pedidos</title>
+  <title>Hacer Pedido</title>
   <style>
     body {
       background: #111;
@@ -11,68 +11,81 @@
       padding: 30px;
       text-align: center;
     }
-    h1 {
-      color: orange;
-    }
-    .pedido {
-      margin: 20px auto;
-      padding: 15px;
-      background: #222;
-      border-left: 6px solid orange;
-      width: 320px;
-      text-align: left;
-      border-radius: 8px;
+    input, textarea, select {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 300px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
     }
     button {
-      margin-top: 10px;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .eliminar {
-      background-color: red;
-      color: white;
-    }
-    .recuperar {
-      background-color: green;
-      color: white;
-    }
-    .ver-eliminados {
-      margin-top: 20px;
-      background-color: orange;
+      padding: 10px 20px;
+      background: orange;
       color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
     }
-    .borrar-todo {
-      background-color: crimson;
+    button:hover {
+      background: darkorange;
+    }
+    .menu {
+      margin-top: 40px;
+    }
+    .menu a {
+      display: block;
       color: white;
-      margin-left: 10px;
+      background: #222;
+      padding: 15px;
+      margin: 10px auto;
+      width: 300px;
+      text-decoration: none;
+      border-radius: 10px;
+      border-left: 6px solid orange;
     }
-    .volver {
-      background-color: #444;
-      color: white;
-      margin-left: 10px;
+    .menu a:hover {
+      background: #333;
     }
-    .pago-info {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      color: #ccc;
+    h2 {
+      color: orange;
+      margin-top: 50px;
     }
   </style>
 </head>
 <body>
 
-  <h1>📋 Pedidos Recibidos</h1>
-  <div id="lista-pedidos">Cargando...</div>
+  <h1>Hacer Pedido</h1>
 
-  <div style="margin-top: 20px;">
-    <button class="ver-eliminados" onclick="verEliminados()">🗃 Ver eliminados</button>
-    <button class="borrar-todo" onclick="borrarTodosEliminados()">🧹 Borrar todos los eliminados</button>
-    <button class="volver" onclick="verPedidosActivos()">↩ Volver</button>
+  <input id="nombre" placeholder="Tu nombre">
+  <textarea id="pedido" placeholder="¿Qué vas a pedir?"></textarea>
+  <input id="direccion" placeholder="Tu dirección">
+
+  <select id="metodo">
+    <option value="">Selecciona método de pago</option>
+    <option value="Efectivo">Efectivo</option>
+    <option value="Nequi">Nequi</option>
+  </select>
+
+  <input id="billete" placeholder="¿Con qué billete vas a pagar? Ej: 50.000">
+
+  <button onclick="enviarPedido()">Enviar Pedido</button>
+
+  <div class="menu">
+    <h2>🍽️ MENÚ SABOR DE CONIDEC</h2>
+    <a href="pizzas.html">🍕 Pizzas</a>
+    <a href="salvajadas.html">🔥 Salvajadas</a>
+    <a href="Sándwiches.html">🥪 Sándwiches</a>
+    <a href="salchipapa.html">🍟 Salchipapa</a>
+    <a href="Chuzos Desgranados.html">🍢 Chuzos Desgranados</a>
+    <a href="perros.html">🌭 Perros</a>
+    <a href="hamburguesa.html">🍔 Hamburguesa</a>
+    <a href="asados.html">🥩 Asados</a>
   </div>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -90,107 +103,42 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    const listaPedidos = document.getElementById("lista-pedidos");
 
-    function esPedidoDeHoy(fechaStr) {
-      const hoy = new Date().toLocaleDateString();
-      return fechaStr.startsWith(hoy);
-    }
+    function enviarPedido() {
+      const nombre = document.getElementById("nombre").value.trim();
+      const pedido = document.getElementById("pedido").value.trim();
+      const direccion = document.getElementById("direccion").value.trim();
+      const metodo = document.getElementById("metodo").value;
+      const billete = document.getElementById("billete").value.trim();
 
-    function cargarPedidos(ref, mostrarRecuperar = false) {
-      ref.on("value", snapshot => {
-        listaPedidos.innerHTML = "";
-        const datos = snapshot.val();
-        if (!datos) {
-          listaPedidos.innerHTML = "<p>No hay pedidos.</p>";
-          return;
-        }
-
-        Object.entries(datos).reverse().forEach(([id, p]) => {
-          if (!mostrarRecuperar && !esPedidoDeHoy(p.fecha)) return;
-
-          const div = document.createElement("div");
-          div.className = "pedido";
-          div.innerHTML = `
-            <strong>📌 ${p.nombre}</strong><br>
-            📝 ${p.pedido}<br>
-            🏠 ${p.direccion}<br>
-            ⏰ ${p.fecha}<br>
-            <div class="pago-info">
-              💳 Método de pago: ${p.metodo || 'No especificado'}<br>
-              💵 Billete: ${p.billete || 'No informado'}
-            </div>
-          `;
-
-          const btn = document.createElement("button");
-          if (mostrarRecuperar) {
-            btn.textContent = "♻ Recuperar";
-            btn.className = "recuperar";
-            btn.onclick = () => {
-              db.ref("pedidos/" + id).set(p);
-              db.ref("eliminados/" + id).remove();
-            };
-          } else {
-            btn.textContent = "🗑 Eliminar";
-            btn.className = "eliminar";
-            btn.onclick = () => {
-              db.ref("eliminados/" + id).set(p);
-              db.ref("pedidos/" + id).remove();
-            };
-          }
-          div.appendChild(btn);
-          listaPedidos.appendChild(div);
-        });
-      });
-    }
-
-    function verPedidosActivos() {
-      cargarPedidos(db.ref("pedidos"));
-    }
-
-    function verEliminados() {
-      db.ref("eliminados").once("value", snapshot => {
-        const datos = snapshot.val();
-        listaPedidos.innerHTML = "";
-        if (!datos) {
-          listaPedidos.innerHTML = "<p>No hay pedidos eliminados.</p>";
-          return;
-        }
-        Object.entries(datos).reverse().forEach(([id, p]) => {
-          const div = document.createElement("div");
-          div.className = "pedido";
-          div.innerHTML = `
-            <strong>📌 ${p.nombre}</strong><br>
-            📝 ${p.pedido}<br>
-            🏠 ${p.direccion}<br>
-            ⏰ ${p.fecha}<br>
-            <div class="pago-info">
-              💳 Método de pago: ${p.metodo || 'No especificado'}<br>
-              💵 Billete: ${p.billete || 'No informado'}
-            </div>
-          `;
-          const btn = document.createElement("button");
-          btn.textContent = "♻ Recuperar";
-          btn.className = "recuperar";
-          btn.onclick = () => {
-            db.ref("pedidos/" + id).set(p);
-            db.ref("eliminados/" + id).remove();
-          };
-          div.appendChild(btn);
-          listaPedidos.appendChild(div);
-        });
-      });
-    }
-
-    function borrarTodosEliminados() {
-      if (confirm("¿Estás seguro de que quieres borrar TODOS los pedidos eliminados?")) {
-        db.ref("eliminados").remove()
-          .then(() => alert("Todos los pedidos eliminados han sido borrados."))
-          .catch(err => alert("Error al borrar: " + err));
+      if (!nombre || !pedido || !direccion) {
+        alert("Por favor llena todos los campos.");
+        return;
       }
-    }
 
-    cargarPedidos(db.ref("pedidos"));
+      const nuevoPedido = {
+        nombre,
+        pedido,
+        direccion,
+        metodo,
+        billete,
+        fecha: new Date().toLocaleString()
+      };
+
+      db.ref("pedidos").push(nuevoPedido)
+        .then(() => {
+          alert("✅ Pedido enviado correctamente.");
+          document.getElementById("nombre").value = "";
+          document.getElementById("pedido").value = "";
+          document.getElementById("direccion").value = "";
+          document.getElementById("metodo").value = "";
+          document.getElementById("billete").value = "";
+        })
+        .catch(error => {
+          console.error("❌ Error al enviar el pedido:", error);
+          alert("❌ Ocurrió un error al enviar el pedido.");
+        });
+    }
   </script>
 
 </body>
