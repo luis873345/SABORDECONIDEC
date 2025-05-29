@@ -1,94 +1,110 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Menú Comida Rápida - Pizzas</title>
+  <title>Hacer Pedido</title>
   <style>
     body {
-      margin: 0;
-      padding: 40px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #1a1a1a;
-      color: #f0f0f0;
-    }
-    .menu-container {
-      max-width: 1000px;
-      margin: auto;
-      background-color: rgba(0, 0, 0, 0.75);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
-    }
-    h1, h2 {
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      padding: 30px;
       text-align: center;
-      margin-bottom: 30px;
-      color: #ffd700;
     }
-    .dish-card {
-      background-color: rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-      transition: transform 0.2s;
+    input, textarea, select {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 300px;
+      border-radius: 5px;
+      border: none;
     }
-    .dish-card:hover {
-      transform: scale(1.02);
-    }
-    .dish-name {
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .dish-price {
-      text-align: right;
-      font-weight: bold;
-      color: #ffd700;
-      float: right;
-    }
-    .back-button {
-      text-align: center;
-      margin-top: 40px;
-    }
-    .back-button a {
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: orange;
+    button {
+      padding: 10px 20px;
+      background: orange;
       color: black;
       font-weight: bold;
-      border-radius: 8px;
-      text-decoration: none;
-      box-shadow: 0 0 10px rgba(255, 165, 0, 0.6);
-      transition: background-color 0.3s;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .back-button a:hover {
-      background-color: darkorange;
+    button:hover {
+      background: darkorange;
     }
   </style>
 </head>
 <body>
-  <div class="menu-container">
-    <h1>Menú Comida Rápida</h1>
-    <h2>Pizzas</h2>
-    <div class="dish-card"><span class="dish-name">Jamón y Queso Mozarella</span><span class="dish-price">19k / 28k / 38k / 45k</span></div>
-    <div class="dish-card"><span class="dish-name">Sólo Queso</span><span class="dish-price">15k / 20k / 27k / 35k</span></div>
-    <div class="dish-card"><span class="dish-name">Hawaiana</span><span class="dish-price">20k / 30k / 40k / 48k</span></div>
-    <div class="dish-card"><span class="dish-name">Pepperoni</span><span class="dish-price">23k / 31k / 41k / 53k</span></div>
-    <div class="dish-card"><span class="dish-name">Salami</span><span class="dish-price">21k / 28k / 38k / 48k</span></div>
-    <div class="dish-card"><span class="dish-name">4 Carnes</span><span class="dish-price">26k / 37k / 48k / 61k</span></div>
-    <div class="dish-card"><span class="dish-name">Pollo</span><span class="dish-price">23k / 31k / 43k / 55k</span></div>
-    <div class="dish-card"><span class="dish-name">Pollo Hawaiana</span><span class="dish-price">26k / 34k / 48k / 60k</span></div>
-    <div class="dish-card"><span class="dish-name">Pollo Tocineta</span><span class="dish-price">23k / 34k / 46k / 60k</span></div>
-    <div class="dish-card"><span class="dish-name">Suiza Ranchera Tocineta</span><span class="dish-price">23k / 34k / 46k / 58k</span></div>
-    <div class="dish-card"><span class="dish-name">Suiza Ranchera Tocineta Especial</span><span class="dish-price">25k / 36k / 48k / 60k</span></div>
-    <div class="dish-card"><span class="dish-name">Pizza Perro</span><span class="dish-price">20k / 29k / 38k / 46k</span></div>
-    <div class="dish-card"><span class="dish-name">Pizza Perro Especial</span><span class="dish-price">22k / 31k / 40k / 49k</span></div>
-    <div class="dish-card"><span class="dish-name">Costeña</span><span class="dish-price">21k / 30k / 38k / 47k</span></div>
-    <div class="dish-card"><span class="dish-name">Vegetariana</span><span class="dish-price">23k / 31k / 40k / 49k</span></div>
-    <div class="dish-card"><span class="dish-name">Bocadillo y Queso</span><span class="dish-price">21k / 36k / 46k / 51k</span></div>
-    <div class="dish-card"><span class="dish-name">Napolitana</span><span class="dish-price">18k / 26k / 33k / 39k</span></div>
-    <div class="dish-card"><span class="dish-name">Pizza del Sabor</span><span class="dish-price">26k / 37k / 49k / 61k</span></div>
-    <div class="back-button"><a href="index.html">🔙 Volver al menú</a></div>
-  </div>
+
+  <h1>Hacer Pedido</h1>
+
+  <input id="nombre" placeholder="Tu nombre">
+  <textarea id="pedido" placeholder="¿Qué vas a pedir?"></textarea>
+  <input id="direccion" placeholder="Tu dirección">
+
+  <select id="metodo">
+    <option value="">Selecciona método de pago</option>
+    <option value="Efectivo">Efectivo</option>
+    <option value="Nequi">Nequi</option>
+  </select>
+
+  <input id="billete" placeholder="¿Con qué billete vas a pagar? Ej: 50.000">
+
+  <button onclick="enviarPedido()">Enviar Pedido</button>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhibeNTwdh0VqnQ3gu1pYfhxJ9YPaq6vw",
+      authDomain: "pedidosconidec.firebaseapp.com",
+      databaseURL: "https://pedidosconidec-default-rtdb.firebaseio.com",
+      projectId: "pedidosconidec",
+      storageBucket: "pedidosconidec.firebasestorage.app",
+      messagingSenderId: "978685790608",
+      appId: "1:978685790608:web:a493a8f806642246894b15",
+      measurementId: "G-KKMDPZW7WB"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function enviarPedido() {
+      const nombre = document.getElementById("nombre").value.trim();
+      const pedido = document.getElementById("pedido").value.trim();
+      const direccion = document.getElementById("direccion").value.trim();
+      const metodo = document.getElementById("metodo").value;
+      const billete = document.getElementById("billete").value.trim();
+
+      if (!nombre || !pedido || !direccion) {
+        alert("Por favor llena todos los campos.");
+        return;
+      }
+
+      const nuevoPedido = {
+        nombre,
+        pedido,
+        direccion,
+        metodo,
+        billete,
+        fecha: new Date().toLocaleString()
+      };
+
+      db.ref("pedidos").push(nuevoPedido)
+        .then(() => {
+          alert("✅ Pedido enviado correctamente.");
+          document.getElementById("nombre").value = "";
+          document.getElementById("pedido").value = "";
+          document.getElementById("direccion").value = "";
+          document.getElementById("metodo").value = "";
+          document.getElementById("billete").value = "";
+        })
+        .catch(error => {
+          console.error("❌ Error al enviar el pedido:", error);
+          alert("❌ Ocurrió un error al enviar el pedido.");
+        });
+    }
+  </script>
+
 </body>
 </html>
