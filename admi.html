@@ -2,119 +2,196 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Hacer Pedido</title>
+  <title>Administrador de Pedidos</title>
   <style>
     body {
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      padding: 30px;
       text-align: center;
     }
-
-    input, textarea, button {
-      padding: 8px;
-      margin: 5px;
-      width: 300px;
-      border-radius: 5px;
-      border: none;
+    h1 {
+      color: orange;
     }
-
-    textarea {
-      resize: vertical;
-    }
-
-    .section {
-      margin-top: 30px;
-    }
-
-    .pedido-item {
-      background-color: #f0f0f0;
-      color: #000;
+    .pedido {
+      margin: 20px auto;
       padding: 15px;
-      margin: 10px auto;
-      border-radius: 8px;
-      max-width: 500px;
+      background: #222;
+      border-left: 6px solid orange;
+      width: 320px;
       text-align: left;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      border-radius: 8px;
     }
-
-    .pedido-item strong {
-      color: #222;
+    button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
       font-weight: bold;
     }
-
-    .pedido-item em {
-      color: #444;
-      font-style: italic;
+    .eliminar {
+      background-color: red;
+      color: white;
     }
-
-    .pedido-item small {
-      color: #666;
-      display: block;
-      margin-top: 5px;
+    .recuperar {
+      background-color: green;
+      color: white;
+    }
+    .ver-eliminados {
+      margin-top: 20px;
+      background-color: orange;
+      color: black;
+    }
+    .borrar-todo {
+      background-color: crimson;
+      color: white;
+      margin-left: 10px;
+    }
+    .volver {
+      background-color: #444;
+      color: white;
+      margin-left: 10px;
+    }
+    .pago-info {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
-  <div class="section">
-    <h2>Hacer Pedido</h2>
-    <form id="pedidoForm">
-      <input type="text" id="nombre" placeholder="Tu nombre" required><br>
-      <textarea id="pedido" placeholder="¿Qué vas a pedir?" rows="4" required></textarea><br>
-      <input type="text" id="direccion" placeholder="Tu dirección" required><br>
-      <button type="submit">Enviar Pedido</button>
-    </form>
 
-    <h3 style="color: #66ccff;">Pedidos Realizados</h3>
-    <div id="listaPedidos"></div>
+  <h1>📋 Pedidos Recibidos</h1>
+  <div id="lista-pedidos">Cargando...</div>
+
+  <div style="margin-top: 20px;">
+    <button class="ver-eliminados" onclick="verEliminados()">🗃 Ver eliminados</button>
+    <button class="borrar-todo" onclick="borrarTodosEliminados()">🧹 Borrar todos los eliminados</button>
+    <button class="volver" onclick="verPedidosActivos()">↩ Volver</button>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <script>
-    function mostrarPedidos() {
-      const lista = document.getElementById('listaPedidos');
-      lista.innerHTML = '';
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhibeNTwdh0VqnQ3gu1pYfhxJ9YPaq6vw",
+      authDomain: "pedidosconidec.firebaseapp.com",
+      databaseURL: "https://pedidosconidec-default-rtdb.firebaseio.com",
+      projectId: "pedidosconidec",
+      storageBucket: "pedidosconidec.firebasestorage.app",
+      messagingSenderId: "978685790608",
+      appId: "1:978685790608:web:a493a8f806642246894b15",
+      measurementId: "G-KKMDPZW7WB"
+    };
 
-      const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const listaPedidos = document.getElementById("lista-pedidos");
 
-      pedidos.forEach(p => {
-        const pedidoFormateado = p.pedido.replace(/\n/g, '<br>');
-        const div = document.createElement('div');
-        div.classList.add('pedido-item');
-        div.innerHTML = `
-          <strong>${p.nombre}</strong> pidió:<br>
-          <em>${pedidoFormateado}</em><br>
-          Dirección: ${p.direccion}
-          <small>${p.fecha}</small>
-        `;
-        lista.appendChild(div);
+    function esPedidoDeHoy(fechaStr) {
+      const hoy = new Date().toLocaleDateString();
+      return fechaStr.startsWith(hoy);
+    }
+
+    function cargarPedidos(ref, mostrarRecuperar = false) {
+      ref.on("value", snapshot => {
+        listaPedidos.innerHTML = "";
+        const datos = snapshot.val();
+        if (!datos) {
+          listaPedidos.innerHTML = "<p>No hay pedidos.</p>";
+          return;
+        }
+
+        Object.entries(datos).reverse().forEach(([id, p]) => {
+          if (!mostrarRecuperar && !esPedidoDeHoy(p.fecha)) return;
+
+          const div = document.createElement("div");
+          div.className = "pedido";
+          div.innerHTML = `
+            <strong>📌 ${p.nombre}</strong><br>
+            📝 ${p.pedido}<br>
+            🏠 ${p.direccion}<br>
+            ⏰ ${p.fecha}<br>
+            <div class="pago-info">
+              💳 Método de pago: ${p.metodo || 'No especificado'}<br>
+              💵 Billete: ${p.billete || 'No informado'}
+            </div>
+          `;
+
+          const btn = document.createElement("button");
+          if (mostrarRecuperar) {
+            btn.textContent = "♻ Recuperar";
+            btn.className = "recuperar";
+            btn.onclick = () => {
+              db.ref("pedidos/" + id).set(p);
+              db.ref("eliminados/" + id).remove();
+            };
+          } else {
+            btn.textContent = "🗑 Eliminar";
+            btn.className = "eliminar";
+            btn.onclick = () => {
+              db.ref("eliminados/" + id).set(p);
+              db.ref("pedidos/" + id).remove();
+            };
+          }
+          div.appendChild(btn);
+          listaPedidos.appendChild(div);
+        });
       });
     }
 
-    document.getElementById('pedidoForm').addEventListener('submit', function (e) {
-      e.preventDefault();
+    function verPedidosActivos() {
+      cargarPedidos(db.ref("pedidos"));
+    }
 
-      const nombre = document.getElementById('nombre').value;
-      const pedido = document.getElementById('pedido').value;
-      const direccion = document.getElementById('direccion').value;
+    function verEliminados() {
+      db.ref("eliminados").once("value", snapshot => {
+        const datos = snapshot.val();
+        listaPedidos.innerHTML = "";
+        if (!datos) {
+          listaPedidos.innerHTML = "<p>No hay pedidos eliminados.</p>";
+          return;
+        }
+        Object.entries(datos).reverse().forEach(([id, p]) => {
+          const div = document.createElement("div");
+          div.className = "pedido";
+          div.innerHTML = `
+            <strong>📌 ${p.nombre}</strong><br>
+            📝 ${p.pedido}<br>
+            🏠 ${p.direccion}<br>
+            ⏰ ${p.fecha}<br>
+            <div class="pago-info">
+              💳 Método de pago: ${p.metodo || 'No especificado'}<br>
+              💵 Billete: ${p.billete || 'No informado'}
+            </div>
+          `;
+          const btn = document.createElement("button");
+          btn.textContent = "♻ Recuperar";
+          btn.className = "recuperar";
+          btn.onclick = () => {
+            db.ref("pedidos/" + id).set(p);
+            db.ref("eliminados/" + id).remove();
+          };
+          div.appendChild(btn);
+          listaPedidos.appendChild(div);
+        });
+      });
+    }
 
-      const nuevoPedido = {
-        nombre,
-        pedido,
-        direccion,
-        fecha: new Date().toLocaleString()
-      };
+    function borrarTodosEliminados() {
+      if (confirm("¿Estás seguro de que quieres borrar TODOS los pedidos eliminados?")) {
+        db.ref("eliminados").remove()
+          .then(() => alert("Todos los pedidos eliminados han sido borrados."))
+          .catch(err => alert("Error al borrar: " + err));
+      }
+    }
 
-      let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-      pedidos.push(nuevoPedido);
-      localStorage.setItem('pedidos', JSON.stringify(pedidos));
-
-      alert('✅ Pedido guardado');
-      this.reset();
-
-      mostrarPedidos();
-    });
-
-    window.addEventListener('load', mostrarPedidos);
+    cargarPedidos(db.ref("pedidos"));
   </script>
+
 </body>
 </html>
