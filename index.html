@@ -11,7 +11,7 @@
       padding: 30px;
       text-align: center;
     }
-    input, textarea {
+    input, textarea, select {
       display: block;
       margin: 10px auto;
       padding: 10px;
@@ -31,25 +31,6 @@
     button:hover {
       background: darkorange;
     }
-    a {
-      display: block;
-      color: white;
-      background: #222;
-      padding: 15px;
-      margin: 10px auto;
-      width: 300px;
-      text-decoration: none;
-      border-radius: 10px;
-      border-left: 6px solid orange;
-    }
-    a:hover { background: #333; }
-    .menu {
-      margin-top: 50px;
-    }
-    h2 {
-      color: orange;
-      margin-top: 50px;
-    }
   </style>
 </head>
 <body>
@@ -59,21 +40,17 @@
   <input id="nombre" placeholder="Tu nombre">
   <textarea id="pedido" placeholder="¿Qué vas a pedir?"></textarea>
   <input id="direccion" placeholder="Tu dirección">
+
+  <select id="metodo">
+    <option value="">Selecciona método de pago</option>
+    <option value="Efectivo">Efectivo</option>
+    <option value="Nequi">Nequi</option>
+  </select>
+
+  <input id="billete" placeholder="¿Con qué billete vas a pagar? Ej: 50.000">
+
   <button onclick="enviarPedido()">Enviar Pedido</button>
 
-  <div class="menu">
-    <h2>🍽️ MENÚ SABOR DE CONIDEC</h2>
-    <a href="pizzas.html">🍕 Pizzas</a>
-    <a href="salvajadas.html">🔥 Salvajadas</a>
-    <a href="Sándwiches.html">🥪 Sándwiches</a>
-    <a href="salchipapa.html">🍟 Salchipapa</a>
-    <a href="Chuzos Desgranados.html">🍢 Chuzos Desgranados</a>
-    <a href="perros.html">🌭 Perros</a>
-    <a href="hamburguesa.html">🍔 Hamburguesa</a>
-    <a href="asados.html">🥩 Asados</a>
-  </div>
-
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -83,9 +60,10 @@
       authDomain: "pedidosconidec.firebaseapp.com",
       databaseURL: "https://pedidosconidec-default-rtdb.firebaseio.com",
       projectId: "pedidosconidec",
-      storageBucket: "pedidosconidec.appspot.com",
+      storageBucket: "pedidosconidec.firebasestorage.app",
       messagingSenderId: "978685790608",
-      appId: "1:978685790608:web:a493a8f806642246894b15"
+      appId: "1:978685790608:web:a493a8f806642246894b15",
+      measurementId: "G-KKMDPZW7WB"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -95,6 +73,8 @@
       const nombre = document.getElementById("nombre").value.trim();
       const pedido = document.getElementById("pedido").value.trim();
       const direccion = document.getElementById("direccion").value.trim();
+      const metodo = document.getElementById("metodo").value;
+      const billete = document.getElementById("billete").value.trim();
 
       if (!nombre || !pedido || !direccion) {
         alert("Por favor llena todos los campos.");
@@ -105,6 +85,8 @@
         nombre,
         pedido,
         direccion,
+        metodo,
+        billete,
         fecha: new Date().toLocaleString()
       };
 
@@ -114,6 +96,8 @@
           document.getElementById("nombre").value = "";
           document.getElementById("pedido").value = "";
           document.getElementById("direccion").value = "";
+          document.getElementById("metodo").value = "";
+          document.getElementById("billete").value = "";
         })
         .catch(error => {
           console.error("❌ Error al enviar el pedido:", error);
@@ -124,4 +108,3 @@
 
 </body>
 </html>
-
