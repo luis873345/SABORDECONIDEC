@@ -3,54 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <title>Hacer Pedido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background: #111;
-      color: white;
-      font-family: sans-serif;
-      padding: 30px;
+      background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
       text-align: center;
+      color: orange;
+      margin-bottom: 20px;
+      font-size: 2.5em;
     }
-    input, textarea, select {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      width: 300px;
-      border-radius: 5px;
+
+    .pedido-form {
+      max-width: 500px;
+      margin: 0 auto 40px;
+      background: #222;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+    }
+
+    .pedido-form input,
+    .pedido-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
       border: none;
+      border-radius: 8px;
+      font-size: 1em;
     }
-    button {
-      padding: 10px 20px;
+
+    .pedido-form button {
+      width: 100%;
+      padding: 12px;
       background: orange;
       color: black;
       font-weight: bold;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 1.1em;
       cursor: pointer;
     }
-    button:hover {
+
+    .pedido-form button:hover {
       background: darkorange;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 50px 0 20px;
+      font-size: 2em;
+      color: #fff;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 0 10px;
+    }
+
+    .menu-card {
+      background: #333;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s;
+      border-left: 6px solid orange;
+    }
+
+    .menu-card:hover {
+      background: #444;
+      transform: scale(1.02);
+    }
+
+    .menu-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .pedido-form {
+        padding: 15px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Hacer Pedido</h1>
+  <h1>🍽️ Hacer Pedido</h1>
 
-  <input id="nombre" placeholder="Tu nombre">
-  <textarea id="pedido" placeholder="¿Qué vas a pedir?"></textarea>
-  <input id="direccion" placeholder="Tu dirección">
+  <div class="pedido-form">
+    <input id="nombre" placeholder="Tu nombre">
+    <textarea id="pedido" placeholder="¿Qué vas a pedir?" rows="4"></textarea>
+    <input id="direccion" placeholder="Tu dirección">
+    <button onclick="enviarPedido()">Enviar Pedido</button>
+  </div>
 
-  <select id="metodo">
-    <option value="">Selecciona método de pago</option>
-    <option value="Efectivo">Efectivo</option>
-    <option value="Nequi">Nequi</option>
-  </select>
+  <h2>Menú Sabor de CONIDEC</h2>
+  <div class="menu-grid">
+    <a class="menu-card" href="pizzas.html">
+      <img src="https://i.imgur.com/tPizza.jpg" alt="Pizzas">
+      🍕 Pizzas
+    </a>
+    <a class="menu-card" href="salvajadas.html">
+      <img src="https://i.imgur.com/uSalvaje.jpg" alt="Salvajadas">
+      🔥 Salvajadas
+    </a>
+    <a class="menu-card" href="Sándwiches.html">
+      <img src="https://i.imgur.com/eSandwich.jpg" alt="Sándwiches">
+      🥪 Sándwiches
+    </a>
+    <a class="menu-card" href="salchipapa.html">
+      <img src="https://i.imgur.com/sSalchi.jpg" alt="Salchipapa">
+      🍟 Salchipapa
+    </a>
+    <a class="menu-card" href="Chuzos Desgranados.html">
+      <img src="https://i.imgur.com/cChuzo.jpg" alt="Chuzos">
+      🍢 Chuzos Desgranados
+    </a>
+    <a class="menu-card" href="perros.html">
+      <img src="https://i.imgur.com/pPerros.jpg" alt="Perros">
+      🌭 Perros
+    </a>
+    <a class="menu-card" href="hamburguesa.html">
+      <img src="https://i.imgur.com/hBurgers.jpg" alt="Hamburguesas">
+      🍔 Hamburguesa
+    </a>
+    <a class="menu-card" href="asados.html">
+      <img src="https://i.imgur.com/aAsados.jpg" alt="Asados">
+      🥩 Asados
+    </a>
+  </div>
 
-  <input id="billete" placeholder="¿Con qué billete vas a pagar? Ej: 50.000">
-
-  <button onclick="enviarPedido()">Enviar Pedido</button>
-
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -62,8 +172,7 @@
       projectId: "pedidosconidec",
       storageBucket: "pedidosconidec.firebasestorage.app",
       messagingSenderId: "978685790608",
-      appId: "1:978685790608:web:a493a8f806642246894b15",
-      measurementId: "G-KKMDPZW7WB"
+      appId: "1:978685790608:web:a493a8f806642246894b15"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -73,8 +182,6 @@
       const nombre = document.getElementById("nombre").value.trim();
       const pedido = document.getElementById("pedido").value.trim();
       const direccion = document.getElementById("direccion").value.trim();
-      const metodo = document.getElementById("metodo").value;
-      const billete = document.getElementById("billete").value.trim();
 
       if (!nombre || !pedido || !direccion) {
         alert("Por favor llena todos los campos.");
@@ -85,8 +192,6 @@
         nombre,
         pedido,
         direccion,
-        metodo,
-        billete,
         fecha: new Date().toLocaleString()
       };
 
@@ -96,8 +201,6 @@
           document.getElementById("nombre").value = "";
           document.getElementById("pedido").value = "";
           document.getElementById("direccion").value = "";
-          document.getElementById("metodo").value = "";
-          document.getElementById("billete").value = "";
         })
         .catch(error => {
           console.error("❌ Error al enviar el pedido:", error);
