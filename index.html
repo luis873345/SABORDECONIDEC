@@ -2,165 +2,148 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Hacer Pedido</title>
+  <title>Menú - Sabor de CONIDEC</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      background: linear-gradient(to right, #0f0f0f, #1a1a1a);
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 20px;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 100px;
     }
 
-    h1 {
-      text-align: center;
-      color: orange;
-      margin-bottom: 20px;
-      font-size: 2.5em;
-    }
-
-    .pedido-form {
-      max-width: 500px;
-      margin: 0 auto 40px;
+    header {
       background: #222;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
-    }
-
-    .pedido-form input,
-    .pedido-form textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-    }
-
-    .pedido-form button {
-      width: 100%;
-      padding: 12px;
-      background: orange;
-      color: black;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1em;
-      cursor: pointer;
-    }
-
-    .pedido-form button:hover {
-      background: darkorange;
-    }
-
-    h2 {
       text-align: center;
-      margin: 50px 0 20px;
+      color: orange;
       font-size: 2em;
-      color: #fff;
     }
 
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    .menu-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
-      padding: 0 10px;
+      padding: 20px;
     }
 
-    .menu-card {
+    .dish-card {
       background: #333;
       border-radius: 12px;
-      padding: 15px;
+      width: 220px;
+      overflow: hidden;
       text-align: center;
-      color: white;
-      text-decoration: none;
-      transition: transform 0.2s, background 0.2s;
-      border-left: 6px solid orange;
+      box-shadow: 0 0 8px rgba(0,0,0,0.6);
     }
 
-    .menu-card:hover {
-      background: #444;
-      transform: scale(1.02);
-    }
-
-    .menu-card img {
+    .dish-card img {
       width: 100%;
       height: 140px;
       object-fit: cover;
-      border-radius: 8px;
+    }
+
+    .dish-card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .dish-card p {
+      margin: 5px 0;
+    }
+
+    .dish-card button {
+      margin: 10px 0 15px;
+      padding: 8px 15px;
+      background: orange;
+      border: none;
+      color: black;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background: #222;
+      padding: 20px;
+      box-shadow: -5px 0 10px rgba(0,0,0,0.5);
+      overflow-y: auto;
+    }
+
+    .cart h2 {
+      color: orange;
       margin-bottom: 10px;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2em;
-      }
+    .cart ul {
+      list-style: none;
+      padding: 0;
+    }
 
-      .pedido-form {
-        padding: 15px;
-      }
+    .cart li {
+      margin: 10px 0;
+      border-bottom: 1px solid #444;
+      padding-bottom: 5px;
+    }
 
-      .menu-grid {
-        grid-template-columns: 1fr;
+    .cart input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .cart-total {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .cart button {
+      width: 100%;
+      padding: 10px;
+      background: orange;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .cart {
+        position: static;
+        width: 100%;
+        box-shadow: none;
       }
     }
   </style>
 </head>
 <body>
 
-  <h1>🍽️ Hacer Pedido</h1>
+  <header>🍽️ Menú - Sabor de CONIDEC</header>
 
-  <div class="pedido-form">
-    <input id="nombre" placeholder="Tu nombre">
-    <textarea id="pedido" placeholder="¿Qué vas a pedir?" rows="4"></textarea>
+  <div class="menu-container" id="menu">
+    <!-- Platos -->
+  </div>
+
+  <div class="cart" id="carrito">
+    <h2>🛒 Tu Pedido</h2>
+    <ul id="cart-items"></ul>
+    <div class="cart-total">Total: $<span id="total">0</span></div>
     <input id="direccion" placeholder="Tu dirección">
     <button onclick="enviarPedido()">Enviar Pedido</button>
   </div>
 
-  <h2>Menú Sabor de CONIDEC</h2>
-  <div class="menu-grid">
-    <a class="menu-card" href="pizzas.html">
-      <img src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg" alt="Pizzas">
-      🍕 Pizzas
-    </a>
-    <a class="menu-card" href="salvajadas.html">
-      <img src="https://cdn.pixabay.com/photo/2017/09/26/13/50/meat-2780054_1280.jpg" alt="Salvajadas">
-      🔥 Salvajadas
-    </a>
-    <a class="menu-card" href="Sándwiches.html">
-      <img src="https://cdn.pixabay.com/photo/2016/03/05/19/02/sandwich-1238615_1280.jpg" alt="Sándwiches">
-      🥪 Sándwiches
-    </a>
-    <a class="menu-card" href="salchipapa.html">
-      <img src="https://cdn.pixabay.com/photo/2022/07/21/16/03/french-fries-7337080_1280.jpg" alt="Salchipapa">
-      🍟 Salchipapa
-    </a>
-    <a class="menu-card" href="Chuzos Desgranados.html">
-      <img src="https://cdn.pixabay.com/photo/2017/09/25/18/57/grilled-meat-2780670_1280.jpg" alt="Chuzos">
-      🍢 Chuzos Desgranados
-    </a>
-    <a class="menu-card" href="perros.html">
-      <img src="https://cdn.pixabay.com/photo/2017/06/02/18/24/hot-dog-2360150_1280.jpg" alt="Perros">
-      🌭 Perros
-    </a>
-    <a class="menu-card" href="hamburguesa.html">
-      <img src="https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg" alt="Hamburguesas">
-      🍔 Hamburguesa
-    </a>
-    <a class="menu-card" href="asados.html">
-      <img src="https://cdn.pixabay.com/photo/2018/05/10/19/18/barbecue-3384879_1280.jpg" alt="Asados">
-      🥩 Asados
-    </a>
-  </div>
-
-  <!-- Firebase SDK -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -178,33 +161,79 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    function enviarPedido() {
-      const nombre = document.getElementById("nombre").value.trim();
-      const pedido = document.getElementById("pedido").value.trim();
-      const direccion = document.getElementById("direccion").value.trim();
+    const platos = [
+      { nombre: "Pizzas", precio: 18000, img: "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg" },
+      { nombre: "Salvajadas", precio: 22000, img: "https://cdn.pixabay.com/photo/2017/09/26/13/50/meat-2780054_1280.jpg" },
+      { nombre: "Sándwiches", precio: 12000, img: "https://cdn.pixabay.com/photo/2016/03/05/19/02/sandwich-1238615_1280.jpg" },
+      { nombre: "Salchipapa", precio: 10000, img: "https://cdn.pixabay.com/photo/2022/07/21/16/03/french-fries-7337080_1280.jpg" },
+      { nombre: "Chuzos", precio: 15000, img: "https://cdn.pixabay.com/photo/2017/09/25/18/57/grilled-meat-2780670_1280.jpg" },
+      { nombre: "Perros", precio: 9000, img: "https://cdn.pixabay.com/photo/2017/06/02/18/24/hot-dog-2360150_1280.jpg" },
+      { nombre: "Hamburguesas", precio: 13000, img: "https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg" },
+      { nombre: "Asados", precio: 25000, img: "https://cdn.pixabay.com/photo/2018/05/10/19/18/barbecue-3384879_1280.jpg" },
+    ];
 
-      if (!nombre || !pedido || !direccion) {
-        alert("Por favor llena todos los campos.");
+    const menuDiv = document.getElementById("menu");
+    const cartList = document.getElementById("cart-items");
+    const totalSpan = document.getElementById("total");
+    let carrito = [];
+
+    platos.forEach((plato, i) => {
+      const card = document.createElement("div");
+      card.className = "dish-card";
+      card.innerHTML = `
+        <img src="${plato.img}" alt="${plato.nombre}">
+        <h3>${plato.nombre}</h3>
+        <p>$${plato.precio.toLocaleString()}</p>
+        <button onclick="agregarAlCarrito(${i})">Agregar</button>
+      `;
+      menuDiv.appendChild(card);
+    });
+
+    function agregarAlCarrito(index) {
+      carrito.push(platos[index]);
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      cartList.innerHTML = "";
+      let total = 0;
+      carrito.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.nombre} - $${item.precio.toLocaleString()}`;
+        cartList.appendChild(li);
+        total += item.precio;
+      });
+      totalSpan.textContent = total.toLocaleString();
+    }
+
+    function enviarPedido() {
+      const direccion = document.getElementById("direccion").value.trim();
+      if (!direccion) {
+        alert("Por favor, escribe tu dirección.");
+        return;
+      }
+      if (carrito.length === 0) {
+        alert("Agrega al menos un producto al carrito.");
         return;
       }
 
-      const nuevoPedido = {
-        nombre,
-        pedido,
+      const pedido = {
         direccion,
+        platos: carrito,
+        total: carrito.reduce((sum, p) => sum + p.precio, 0),
         fecha: new Date().toLocaleString()
       };
 
-      db.ref("pedidos").push(nuevoPedido)
+      db.ref("pedidos").push(pedido)
         .then(() => {
           alert("✅ Pedido enviado correctamente.");
-          document.getElementById("nombre").value = "";
-          document.getElementById("pedido").value = "";
+          carrito = [];
+          actualizarCarrito();
           document.getElementById("direccion").value = "";
         })
-        .catch(error => {
-          console.error("❌ Error al enviar el pedido:", error);
-          alert("❌ Ocurrió un error al enviar el pedido.");
+        .catch(err => {
+          alert("❌ Error al enviar el pedido.");
+          console.error(err);
         });
     }
   </script>
