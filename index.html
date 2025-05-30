@@ -2,134 +2,104 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Menú Sabor de Conidec</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Restaurante</title>
   <style>
-    body { background: #111; color: white; font-family: sans-serif; margin: 0; padding: 20px; }
-    h1, h2 { text-align: center; color: orange; }
-    .categoria { background: #222; border: 2px solid orange; margin: 20px 0; border-radius: 10px; }
-    .categoria-header { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.2rem; }
-    .platos { display: none; padding: 10px 20px; }
-    .plato { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #333; }
-    .plato:last-child { border-bottom: none; }
-    .carrito { position: fixed; top: 20px; right: 20px; background: #222; padding: 20px; border-radius: 10px; width: 300px; border: 2px solid orange; }
-    .carrito h2 { color: orange; }
-    .carrito-item { display: flex; justify-content: space-between; padding: 5px 0; }
-    .total { margin-top: 10px; font-weight: bold; }
-    input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: none; }
-    button { background: orange; color: black; font-weight: bold; cursor: pointer; }
-    button:hover { background: darkorange; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1c1c1c;
+      color: #f5f5f5;
+    }
+    .menu {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #ff8c00;
+    }
+    .section {
+      margin-bottom: 3rem;
+    }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem;
+      border-bottom: 1px solid #444;
+    }
+    .item-name {
+      font-weight: bold;
+    }
+    .item-price {
+      color: #ff8c00;
+    }
+    .highlight {
+      background-color: #2c2c2c;
+      border-left: 4px solid #ff8c00;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
-  <h1>🍽️ MENÚ SABOR DE CONIDEC</h1>
+  <div class="menu">
+    <h1>MENÚ SABOR DE CONIDEC</h1>
 
-  <div id="menu"></div>
+    <div class="section">
+      <h2>PIZZAS</h2>
+      <div class="item"><span class="item-name">Jamón y Queso mozzarella (8)</span><span class="item-price">$10.000</span></div>
+      <div class="item"><span class="item-name">4 Carnes (4)</span><span class="item-price">$9.000</span></div>
+    </div>
 
-  <div class="carrito">
-    <h2>🛒 Tu Pedido</h2>
-    <div id="carrito-items"></div>
-    <div class="total">Total: $<span id="total">0</span></div>
-    <input type="text" id="direccion" placeholder="Ingresa tu dirección">
-    <input type="text" id="nombre" placeholder="Tu nombre">
-    <button onclick="realizarPedido()">Enviar Pedido</button>
+    <div class="section">
+      <h2>PERROS</h2>
+      <div class="item"><span class="item-name">Perro Suizo</span><span class="item-price">$13.000</span></div>
+      <div class="item"><span class="item-name">Perro Italiano</span><span class="item-price">$8.000</span></div>
+      <div class="item"><span class="item-name">Perro Sencillo</span><span class="item-price">$6.000</span></div>
+      <div class="item"><span class="item-name">Perro Especial</span><span class="item-price">$8.000</span></div>
+    </div>
+
+    <div class="section">
+      <h2>HAMBURGUESAS</h2>
+      <div class="item"><span class="item-name">Hamburguesa Sencilla</span><span class="item-price">$7.000</span></div>
+      <div class="item"><span class="item-name">Hamburguesa Especial</span><span class="item-price">$9.000</span></div>
+    </div>
+
+    <div class="section">
+      <h2>SALCHIPAPAS</h2>
+      <div class="item"><span class="item-name">Salchipapas Sencillas</span><span class="item-price">$7.000</span></div>
+      <div class="item"><span class="item-name">Salchipapas Especiales</span><span class="item-price">$9.000</span></div>
+    </div>
+
+    <div class="section">
+      <h2>CHUZOS</h2>
+      <div class="item"><span class="item-name">Chuzo de Pollo</span><span class="item-price">$7.000</span></div>
+      <div class="item"><span class="item-name">Chuzo de Res</span><span class="item-price">$8.000</span></div>
+      <div class="item"><span class="item-name">Chuzo Mixto</span><span class="item-price">$9.000</span></div>
+    </div>
+
+    <div class="section">
+      <h2>ASADOS</h2>
+      <div class="item"><span class="item-name">Pechuga Asada</span><span class="item-price">$13.000</span></div>
+      <div class="item"><span class="item-name">Chuleta de Cerdo</span><span class="item-price">$14.000</span></div>
+      <div class="item"><span class="item-name">Carne Asada</span><span class="item-price">$15.000</span></div>
+      <div class="item"><span class="item-name">Costilla BBQ</span><span class="item-price">$18.000</span></div>
+    </div>
+
+    <div class="section">
+      <h2>ACOMPAÑAMIENTOS Y BEBIDAS</h2>
+      <div class="item"><span class="item-name">Porción de Papa</span><span class="item-price">$3.000</span></div>
+      <div class="item"><span class="item-name">Arepa</span><span class="item-price">$1.500</span></div>
+      <div class="item"><span class="item-name">Gaseosa 400ml</span><span class="item-price">$2.500</span></div>
+      <div class="item"><span class="item-name">Gaseosa 1.5L</span><span class="item-price">$5.000</span></div>
+      <div class="item"><span class="item-name">Jugos Naturales</span><span class="item-price">$4.000</span></div>
+    </div>
+
+    <div class="highlight">
+      Todos los platos se preparan al momento para garantizar frescura y sabor.
+    </div>
   </div>
-
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBhibeNTwdh0VqnQ3gu1pYfhxJ9YPaq6vw",
-      authDomain: "pedidosconidec.firebaseapp.com",
-      databaseURL: "https://pedidosconidec-default-rtdb.firebaseio.com",
-      projectId: "pedidosconidec",
-      storageBucket: "pedidosconidec.appspot.com",
-      messagingSenderId: "978685790608",
-      appId: "1:978685790608:web:a493a8f806642246894b15"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    const categorias = {
-      "Pizzas": [
-        { nombre: "Jamón y Queso mozarella (S)", precio: 19000 },
-        { nombre: "4 Carnes (L)", precio: 48000 }
-      ],
-      "Perros": [
-        { nombre: "Perro Suizo", precio: 13000 },
-        { nombre: "Perro Italiano", precio: 6000 }
-      ],
-      "Salchipapas": [
-        { nombre: "Salchipapa Suiza", precio: 15000 },
-        { nombre: "Salchipapa de la Casa", precio: 18000 }
-      ],
-      "Salvajadas": [
-        { nombre: "Salvajadas para 2 gratinada", precio: 25000 },
-        { nombre: "Salvajadas para 4 especial", precio: 40000 }
-      ],
-      "Sándwiches": [
-        { nombre: "Jamón y queso mozarella", precio: 9000 },
-        { nombre: "Pollo, tocineta y jamón", precio: 17000 }
-      ]
-    };
-
-    let carrito = [];
-
-    const menu = document.getElementById('menu');
-    for (const cat in categorias) {
-      const div = document.createElement('div');
-      div.className = 'categoria';
-      div.innerHTML = `<div class='categoria-header' onclick="toggle(this)">${cat}</div><div class='platos'></div>`;
-      const platosDiv = div.querySelector('.platos');
-      categorias[cat].forEach(p => {
-        const pDiv = document.createElement('div');
-        pDiv.className = 'plato';
-        pDiv.innerHTML = `<span>${p.nombre}</span><span>$${p.precio}</span><button onclick='agregarAlCarrito("${p.nombre}", ${p.precio})'>Agregar</button>`;
-        platosDiv.appendChild(pDiv);
-      });
-      menu.appendChild(div);
-    }
-
-    function toggle(el) {
-      const next = el.nextElementSibling;
-      next.style.display = next.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function agregarAlCarrito(nombre, precio) {
-      carrito.push({ nombre, precio });
-      renderCarrito();
-    }
-
-    function renderCarrito() {
-      const carritoItems = document.getElementById('carrito-items');
-      carritoItems.innerHTML = '';
-      let total = 0;
-      carrito.forEach(item => {
-        total += item.precio;
-        const div = document.createElement('div');
-        div.className = 'carrito-item';
-        div.textContent = `${item.nombre} - $${item.precio}`;
-        carritoItems.appendChild(div);
-      });
-      document.getElementById('total').textContent = total;
-    }
-
-    function realizarPedido() {
-      const direccion = document.getElementById('direccion').value;
-      const nombre = document.getElementById('nombre').value;
-      if (!direccion || !nombre || carrito.length === 0) {
-        alert("Completa todos los campos y agrega al menos un producto.");
-        return;
-      }
-      const pedido = carrito.map(p => p.nombre).join(", ");
-      const nuevoPedido = { nombre, direccion, pedido, fecha: new Date().toLocaleString() };
-      db.ref("pedidos").push(nuevoPedido).then(() => {
-        alert("✅ Pedido enviado");
-        carrito = [];
-        renderCarrito();
-        document.getElementById('direccion').value = '';
-        document.getElementById('nombre').value = '';
-      });
-    }
-  </script>
 </body>
 </html>
