@@ -1,60 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>MENÚ SABOR DE CONIDEC</title>
-    <link rel="stylesheet" href="estilos.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menú Sabor de CONIDEC</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    img.logo {
+      width: 200px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #ff6600;
+      margin-bottom: 30px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .menu-item {
+      background-color: #222;
+      border: 2px solid #ff6600;
+      border-radius: 15px;
+      padding: 15px;
+      transition: transform 0.2s ease;
+    }
+
+    .menu-item:hover {
+      transform: scale(1.05);
+    }
+
+    .menu-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .menu-item span {
+      display: block;
+      font-weight: bold;
+      color: white;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 250px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border: none;
+      background-color: #ff6600;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e65c00;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <img src="logo.png" alt="Logo Sabor de Conidec" class="logo">
-        <h1>MENÚ SABOR DE CONIDEC</h1>
-    </header>
 
-    <main>
-        <section class="menu-grid">
-            <div class="menu-item">
-                <img src="img/pizza.png" alt="Pizzas">
-                <button>Pizzas</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/perro.png" alt="Perros">
-                <button>Perros</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/hamburguesa.png" alt="Hamburguesas">
-                <button>Hamburguesas</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/salchipapas.png" alt="Salchipapas">
-                <button>Salchipapas</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/asado.png" alt="Asados">
-                <button>Asados</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/chuzo.png" alt="Chuzos">
-                <button>Chuzos</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/desgranado.png" alt="Desgranados">
-                <button>Desgranados</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/salvajada.png" alt="Salvajadas">
-                <button>Salvajadas</button>
-            </div>
-            <div class="menu-item">
-                <img src="img/sandwich.png" alt="Sándwich">
-                <button>Sándwich</button>
-            </div>
-        </section>
+  <img src="https://imgur.com/a/17ZdHpw" alt="Logo Sabor de Conidec" class="logo" />
 
-        <form class="direccion-form">
-            <input type="text" placeholder="Ingresa tu dirección">
-            <button type="submit">Enviar</button>
-        </form>
-    </main>
+  <h1>MENÚ SABOR DE CONIDEC</h1>
+
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img src="https://imgur.com/a/MrVYV7j" alt="Pizzas" />
+      <span>Pizzas</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://imgur.com/a/VqmWma0" alt="Perros" />
+      <span>Perros</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.imgur.com/BZ7T9Ij.png" alt="Hamburguesas" />
+      <span>Hamburguesas</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.imgur.com/zYF8DDW.png" alt="Salchipapas" />
+      <span>Salchipapas</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.imgur.com/wV3vZft.png" alt="Asados" />
+      <span>Asados</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.imgur.com/JD8uKiV.png" alt="Chuzos" />
+      <span>Chuzos</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.imgur.com/G8nUSWY.png" alt="Desgranados" />
+      <span>Desgranados</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.imgur.com/B4zpC2o.png" alt="Salvajadas" />
+      <span>Salvajadas</span>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.imgur.com/9kx9NgI.png" alt="Sándwich" />
+      <span>Sándwich</span>
+    </div>
+  </div>
+
+  <form>
+    <input type="text" placeholder="Ingresa tu dirección" />
+    <button type="submit">Enviar</button>
+  </form>
+
 </body>
 </html>
