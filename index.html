@@ -1,111 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menú Sabor de CONIDEC</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: #111;
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    header img {
-      max-width: 160px;
-      margin-bottom: 15px;
-    }
-
-    h1 {
-      color: #ff6600;
-      font-size: 2.2rem;
-      margin-bottom: 30px;
-    }
-
-    .menu-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .menu-btn {
-      background-color: #1c1c1c;
-      border: 2px solid #ff6600;
-      color: white;
-      padding: 16px 28px;
-      font-size: 1rem;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      min-width: 150px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-    }
-
-    .menu-btn:hover {
-      background-color: #ff6600;
-      color: black;
-      transform: scale(1.05);
-    }
-
-    .direccion-input {
-      margin-top: 30px;
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      width: 250px;
-      font-size: 1rem;
-    }
-
-    button.enviar {
-      background-color: #ff6600;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 10px;
-      margin-top: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button.enviar:hover {
-      background-color: #e65c00;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>MENÚ SABOR DE CONIDEC</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    <header>
+        <img src="logo.png" alt="Logo Sabor de Conidec" class="logo">
+        <h1>MENÚ SABOR DE CONIDEC</h1>
+    </header>
 
-  <header>
-    <img src="c413ab8f-4c05-48bc-907b-013f62be5959.png" alt="Logo Sabor de Conidec" />
-    <h1>MENÚ SABOR DE CONIDEC</h1>
-  </header>
+    <main>
+        <section class="menu-grid">
+            <div class="menu-item">
+                <img src="img/pizza.png" alt="Pizzas">
+                <button>Pizzas</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/perro.png" alt="Perros">
+                <button>Perros</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/hamburguesa.png" alt="Hamburguesas">
+                <button>Hamburguesas</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/salchipapas.png" alt="Salchipapas">
+                <button>Salchipapas</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/asado.png" alt="Asados">
+                <button>Asados</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/chuzo.png" alt="Chuzos">
+                <button>Chuzos</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/desgranado.png" alt="Desgranados">
+                <button>Desgranados</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/salvajada.png" alt="Salvajadas">
+                <button>Salvajadas</button>
+            </div>
+            <div class="menu-item">
+                <img src="img/sandwich.png" alt="Sándwich">
+                <button>Sándwich</button>
+            </div>
+        </section>
 
-  <div class="menu-grid">
-    <button class="menu-btn">Pizzas</button>
-    <button class="menu-btn">Perros</button>
-    <button class="menu-btn">Hamburguesas</button>
-    <button class="menu-btn">Salchipapas</button>
-    <button class="menu-btn">Asados</button>
-    <button class="menu-btn">Chuzos</button>
-    <button class="menu-btn">Desgranados</button>
-    <button class="menu-btn">Salvajadas</button>
-    <button class="menu-btn">Sándwich</button>
-  </div>
-
-  <div class="direccion-input">
-    <input type="text" placeholder="Ingresa tu dirección" />
-    <br />
-    <button class="enviar">Enviar</button>
-  </div>
-
+        <form class="direccion-form">
+            <input type="text" placeholder="Ingresa tu dirección">
+            <button type="submit">Enviar</button>
+        </form>
+    </main>
 </body>
 </html>
