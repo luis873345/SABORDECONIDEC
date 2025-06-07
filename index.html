@@ -2,129 +2,137 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menú Sabor de CONIDEC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sabor de CONIDEC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #fafafa;
+    }
+
+    .header {
+      background-color: #ffffff;
       padding: 20px;
+      text-align: center;
+      font-size: 1.8em;
+      font-weight: 600;
+      color: #FF6F00;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    img.logo {
-      width: 200px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      color: #ff6600;
-      margin-bottom: 30px;
-    }
-
-    .menu-grid {
+    .menu {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      max-width: 600px;
-      margin: 0 auto 40px;
+      padding: 30px 20px 80px;
     }
 
     .menu-item {
-      background-color: #222;
-      border: 2px solid #ff6600;
-      border-radius: 15px;
-      padding: 15px;
-      transition: transform 0.2s ease;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .menu-item:hover {
-      transform: scale(1.05);
+      transform: translateY(-5px);
     }
 
     .menu-item img {
-      width: 100px;
-      height: 100px;
+      width: 100%;
+      height: 150px;
       object-fit: cover;
-      margin-bottom: 10px;
-      border-radius: 10px;
     }
 
-    .menu-item span {
+    .menu-item a {
       display: block;
-      font-weight: bold;
-      color: white;
+      padding: 15px;
+      color: #333;
+      text-decoration: none;
+      font-size: 1.1em;
+      font-weight: 600;
+      text-align: center;
+      background-color: #fff;
     }
 
-    input[type="text"] {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      width: 250px;
-      margin-top: 20px;
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #fff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
+      z-index: 100;
     }
 
-    button {
-      padding: 10px 20px;
-      margin-left: 10px;
-      border: none;
-      background-color: #ff6600;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
+    .bottom-nav a {
+      color: #FF6F00;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1em;
     }
 
-    button:hover {
-      background-color: #e65c00;
+    .bottom-nav a:hover {
+      color: #ff8c00;
     }
   </style>
 </head>
 <body>
 
-  <img src="img/pizzas.jpg" alt="Logo Sabor de Conidec" class="logo" />
+  <header class="header">
+    <h1>Sabor de CONIDEC 🍽️</h1>
+  </header>
 
-  <h1>MENÚ SABOR DE CONIDEC</h1>
-
-  <div class="menu-grid">
+  <div class="menu">
     <div class="menu-item">
-      <img src="img/pizzas.jpg" alt="Pizzas" />
-      <span>Pizzas</span>
+      <img src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg" alt="Pizza">
+      <a href="pizzas.html">🍕 Pizzas</a>
     </div>
     <div class="menu-item">
-      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Franchera.com.co%2Freceta%2Frecetas-con-salchicha%2Fperro-caliente-colombiano%2F&psig=AOvVaw2MFDP_YTKZIV88Cz6gQl1-&ust=1748759972129000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCKD87NmMzY0DFQAAAAAdAAAAABAK.jpg" alt="Perros" />
-      <span>Perros</span>
+      <img src="gh.png" alt="Salvajadas">
+      <a href="salvajadas.html">🔥 Salvajadas</a>
     </div>
     <div class="menu-item">
-      <img src="img/hamburguesas.jpg" alt="Hamburguesas" />
-      <span>Hamburguesas</span>
+      <img src="sandhwich.png" alt="Sándwiches">
+      <a href="sandwiches.html">🥪 Sándwiches</a>
     </div>
     <div class="menu-item">
-      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.semana.com%2Fnacion%2Fbarranquilla%2Farticulo%2Ftodo-lo-que-usted-necesita-saber-sobre-el-festival-de-la-salchipapa-que-ya-arranco-en-barranquilla-hay-25-participantes%2F202450%2F&psig=AOvVaw1dOKy-NYnsbRI3_9Bkmce-&ust=1748760055431000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNCe_IaNzY0DFQAAAAAdAAAAABAE.jpg" alt="Salchipapas" />
-      <span>Salchipapas</span>
+      <img src="images.jpg" alt="Salchipapa">
+      <a href="salchipapa.html">🍟 Salchipapa</a>
     </div>
     <div class="menu-item">
-      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.instagram.com%2Fp%2FDBl-fQLRCEH%2F&psig=AOvVaw3wr2zDXDkKIJxwmnSpONqG&ust=1748760148569000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJDK9cKNzY0DFQAAAAAdAAAAABAE.jpg" alt="Asados" />
-      <span>Asados</span>
+      <img src="chuzos.png" alt="Chuzos">
+      <a href="chuzos-desgranados.html">🍢 Chuzos Desgranados</a>
     </div>
     <div class="menu-item">
-      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.recetasnestle.com.ec%2Frecetas%2Fcarne-en-palito&psig=AOvVaw2Ek2QZNUnJg_mtABYcazkb&ust=1748760227297000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCPD-o9SNzY0DFQAAAAAdAAAAABAE.jpg" alt="Chuzos Desgranado" />
-      <span>Chuzos Desgranado</span>
+      <img src="perros.png" alt="Perros">
+      <a href="perros.html">🌭 Perros</a>
     </div>
     <div class="menu-item">
-      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Flivornos.com%2Fproduct%2Fsalvajada-livornos-super-x4%2F&psig=AOvVaw0QiY6t8XZVJVGxu5taUXsj&ust=1748760260636000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCODhvOKNzY0DFQAAAAAdAAAAABAE.jpg" alt="Salvajadas" />
-      <span>Salvajadas</span>
+      <img src="hamburguesa.png" alt="Hamburguesa">
+      <a href="hamburguesa.html">🍔 Hamburguesa</a>
     </div>
     <div class="menu-item">
-      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.elespectador.com%2Fgastronomia-y-recetas%2Freceta-sandwich-de-carne-facil-y-delicioso%2F&psig=AOvVaw0G4ERhIomad65IV22mw2_U&ust=1748760292387000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJjN5fWNzY0DFQAAAAAdAAAAABAE.jpg" alt="Sándwich" />
-      <span>Sándwich</span>
+      <img src="asados.png" alt="Asados">
+      <a href="asados.html">🥩 Asados</a>
     </div>
   </div>
 
-  <form>
-    <input type="text" placeholder="Ingresa tu dirección" />
-    <button type="submit">Enviar</button>
-  </form>
+  <nav class="bottom-nav">
+    <a href="#">🏠 Inicio</a>
+    <a href="#">🛒 Carrito</a>
+    <a href="#">📦 Pedidos</a>
+    <a href="#">👤 Cuenta</a>
+  </nav>
 
 </body>
 </html>
